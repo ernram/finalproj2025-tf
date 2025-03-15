@@ -32,7 +32,7 @@ resource "aws_route53_record" "eks_domain_cert_validation_dns" {
 # ACM domain certificate for tag_env + base.domain
 resource "aws_acm_certificate" "eks_domain_cert" {
   domain_name               = "${var.tag_env}.${var.base_domain}"
-  subject_alternative_names = ["*.${var.tag_env}.${var.base_domain}"]
+  subject_alternative_names = ["*.${var.base_domain}"]
   validation_method         = "DNS"
 
   tags = {
@@ -56,7 +56,7 @@ data "aws_lb" "ingress" {
 # Route 53 dns record for vpn
 resource "aws_route53_record" "bastion_host_record" {
   zone_id = data.aws_route53_zone.base_domain.id
-  name    = "bastion.${var.tag_env}.${var.base_domain}"
+  name    = "bastion.${var.base_domain}"
   type    = "A"
   ttl     = "300"
   records = [aws_eip.bastion_host.public_ip]
