@@ -51,3 +51,8 @@ variable "cd_project_repo" {
   type    = string
   description = "argo CD project repo"
 }
+
+variable "external_id" {
+  type        = string
+  description = "external id for datadog aws integration"
+}
