@@ -6,12 +6,13 @@ module "rds" {
   source  = "cloudposse/rds-cluster/aws"
   version = "1.7.0"
 
-  name                 = "rds-${var.tag_env}" #"rds"
-  engine               = "aurora-mysql"       #"aurora-postgresql"
-  engine_mode          = "serverless"         #"serverless"
-  cluster_family       = "aurora-mysql5.7"    #"aurora-postgresql10"
-  cluster_size         = 0                    #0
-  cluster_type         = "regional"           #"regional"
+  name                 = "rds-${var.tag_env}"
+  engine               = "aurora-mysql"
+  engine_mode          = "provisioned"  # Changed from serverless since Aurora Serverless v1 is being deprecated
+  engine_version       = "5.7"
+  cluster_family       = "aurora-mysql5.7"
+  cluster_size         = 1  # Changed from 0 since provisioned requires at least 1 instance
+  cluster_type         = "regional"
   admin_user           = random_password.rds_admin_username.result
   admin_password       = random_password.rds_password.result
   db_name              = random_password.rds_db_name.result
@@ -21,15 +22,8 @@ module "rds" {
   subnets              = module.vpc.database_subnets
   enable_http_endpoint = true
 
-  scaling_configuration = [
-    {
-      auto_pause               = true
-      max_capacity             = 16
-      min_capacity             = 1
-      seconds_until_auto_pause = 300
-      timeout_action           = "ForceApplyCapacityChange"
-    }
-  ]
+  # Removed scaling_configuration since it's only for serverless mode
+  
   tags = {
     Name = "${var.tag_env}-rds"
   }
