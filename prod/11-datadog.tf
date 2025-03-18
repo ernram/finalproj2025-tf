@@ -27,7 +27,6 @@ resource "aws_cloudformation_stack" "datadog-aws-integration" {
     ExternalId      = var.external_id
     DdApiKey        = var.datadog_api_key
     DdForwarderName = var.datadog_application_key
-    IAMRoleName = "DatadogIntegrationRole"
   }
   template_url = "https://datadog-cloudformation-template.s3.amazonaws.com/aws/main.yaml"
 }
