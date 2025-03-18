@@ -9,7 +9,7 @@ module "rds" {
   name                 = "rds-${var.tag_env}"
   engine               = "aurora-mysql"
   engine_mode          = "provisioned"  # Changed from serverless since Aurora Serverless v1 is being deprecated
-  engine_version      = "5.7"
+  engine_version       = "5.7"
   cluster_family       = "aurora-mysql5.7"
   cluster_size         = 1  # Changed from 0 since provisioned requires at least 1 instance
   cluster_type         = "regional"
